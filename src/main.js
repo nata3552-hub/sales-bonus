@@ -128,27 +128,19 @@ function analyzeSalesData(data, options) {
             .slice(0, 10);
     });
     // @TODO: Подготовка итоговой коллекции с нужными полями
-    // @TODO: Подготовка итоговой коллекции с нужными полями
-return sellerStats.map((seller, index) => {
-    // 1. Сначала фиксируем округленные значения выручки и прибыли
-    const finalRevenue = +seller.revenue.toFixed(2);
-    const finalProfit = +seller.profit.toFixed(2);
-
-    // 2. Рассчитываем бонус, передавая в функцию УЖЕ округленную прибыль.
-    // Это критически важно, чтобы бонус соответствовал числу profit в отчете.
-    const rawBonus = calculateBonus(index, total, { ...seller, profit: finalProfit });
-    const finalBonus = +rawBonus.toFixed(2);
-
-    return {
+    return sellerStats.map(seller => ({
         seller_id: seller.id,
         name: seller.name,
-        revenue: finalRevenue,
-        profit: finalProfit,
-        sales_count: seller.sales_count,
-        top_products: seller.top_products,
-        bonus: finalBonus
-    };
-});
 
+        revenue: +seller.revenue.toFixed(2),
+        profit: +seller.profit.toFixed(2),
+
+        sales_count: seller.sales_count,
+
+        top_products: seller.top_products,
+
+        bonus: +seller.bonus.toFixed(2)
+}));
     }
+    
     
