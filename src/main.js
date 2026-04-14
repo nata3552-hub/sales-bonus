@@ -94,7 +94,7 @@ function analyzeSalesData(data, options) {
             const product = productIndex[item.sku];
             if (!product) return;
            // 1. считаем количество продаж (чеков)
-        seller.sales_count += item.quantity;
+        seller.sales_count += 1;
         // себестоимость
             const cost = product.purchase_price * item.quantity;
 
