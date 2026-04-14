@@ -88,7 +88,7 @@ function analyzeSalesData(data, options) {
         if (!seller) return;
 
     // 1. считаем количество продаж (чеков)
-        seller.sales_count += 1;
+        seller.sales_count += item.quantity;
 
     // 2. перебираем товары в чеке
         record.items.forEach(item => {
