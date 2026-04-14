@@ -104,9 +104,9 @@ function analyzeSalesData(data, options) {
         // прибыль
             const profit = revenue - cost;
         // накапливаем выручку по чеку
-        seller.revenue += revenue;
+        seller.revenue = +(seller.revenue + revenue).toFixed(10);
         // накапливаем прибыль продавца
-            seller.profit += profit;
+            seller.profit = +(seller.profit + profit).toFixed(10);
 
         // учет проданных товаров
             if (!seller.products_sold[item.sku]) {
