@@ -87,14 +87,14 @@ function analyzeSalesData(data, options) {
     // если вдруг продавца нет — пропускаем
         if (!seller) return;
 
-     
+    // 1. считаем количество продаж (чеков)
+        seller.sales_count += 1;
 
     // 2. перебираем товары в чеке
         record.items.forEach(item => {
             const product = productIndex[item.sku];
             if (!product) return;
-           // 1. считаем количество продаж (чеков)
-        seller.sales_count += record.items.length;
+
         // себестоимость
             const cost = product.purchase_price * item.quantity;
 
