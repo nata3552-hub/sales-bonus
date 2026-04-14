@@ -7,12 +7,7 @@
 function calculateSimpleRevenue(purchase, _product) {
    // @TODO: Расчет выручки от операции
    const { discount, sale_price, quantity } = purchase
-   const revenue =
-        sale_price *
-        quantity *
-        (1 - discount / 100);
-
-    return Math.round(revenue * 100) / 100;
+   return sale_price * quantity * (1 - discount / 100);
 }
 
 /**
@@ -88,6 +83,7 @@ function analyzeSalesData(data, options) {
     );
     // @TODO: Расчет выручки и прибыли для каждого продавца
     data.purchase_records.forEach(record => {
+        
         const seller = sellerIndex[record.seller_id];
 
     // если вдруг продавца нет — пропускаем
@@ -100,17 +96,14 @@ function analyzeSalesData(data, options) {
         record.items.forEach(item => {
             const product = productIndex[item.sku];
             if (!product) return;
-
+        // выручка (через функцию)
+            const revenue = calculateRevenue(item, product); 
         // себестоимость
             const cost = product.purchase_price * item.quantity;
-
-        // выручка (через функцию)
-            const revenue = calculateRevenue(item, product);
-
         // прибыль
             const profit = revenue - cost;
         // накапливаем выручку по чеку
-        seller.revenue += revenue;
+            seller.revenue += revenue;
         // накапливаем прибыль продавца
             seller.profit += profit;
 
@@ -135,17 +128,27 @@ function analyzeSalesData(data, options) {
             .slice(0, 10);
     });
     // @TODO: Подготовка итоговой коллекции с нужными полями
-    return sellerStats.map(seller => ({
+    // @TODO: Подготовка итоговой коллекции с нужными полями
+return sellerStats.map((seller, index) => {
+    // 1. Сначала фиксируем округленные значения выручки и прибыли
+    const finalRevenue = +seller.revenue.toFixed(2);
+    const finalProfit = +seller.profit.toFixed(2);
+
+    // 2. Рассчитываем бонус, передавая в функцию УЖЕ округленную прибыль.
+    // Это критически важно, чтобы бонус соответствовал числу profit в отчете.
+    const rawBonus = calculateBonus(index, total, { ...seller, profit: finalProfit });
+    const finalBonus = +rawBonus.toFixed(2);
+
+    return {
         seller_id: seller.id,
         name: seller.name,
-
-        revenue: +seller.revenue.toFixed(2),
-        profit: +seller.profit.toFixed(2),
-
+        revenue: finalRevenue,
+        profit: finalProfit,
         sales_count: seller.sales_count,
-
         top_products: seller.top_products,
+        bonus: finalBonus
+    };
+});
 
-        bonus: +seller.bonus.toFixed(2)
-}));
     }
+    
