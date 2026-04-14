@@ -99,14 +99,14 @@ function analyzeSalesData(data, options) {
             const cost = product.purchase_price * item.quantity;
 
         // выручка (через функцию)
-            const revenue = calculateRevenue(item, product);
+            const revenue = Number(calculateRevenue(item, product).toFixed(2));
 
         // прибыль
             const profit = revenue - cost;
         // накапливаем выручку по чеку
-        seller.revenue = +(seller.revenue + revenue).toFixed(10);
+        seller.revenue += revenue;
         // накапливаем прибыль продавца
-            seller.profit = +(seller.profit + profit).toFixed(10);
+            seller.profit += profit;
 
         // учет проданных товаров
             if (!seller.products_sold[item.sku]) {
