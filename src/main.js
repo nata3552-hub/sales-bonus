@@ -20,7 +20,7 @@ function calculateSimpleRevenue(purchase, _product) {
 function calculateBonusByProfit(index, total, seller) {
     // @TODO: Расчет бонуса от позиции в рейтинге
     const { profit } = seller;
-     let bonus;
+    let bonus;
 
     if (index === 0) {
         bonus = profit * 0.15;
@@ -32,7 +32,8 @@ function calculateBonusByProfit(index, total, seller) {
         bonus = profit * 0.05;
     }
 
-    return Math.floor(bonus * 100) / 100;
+    return +bonus.toFixed(2);
+    
 }
     // методика расчетов бонусов
     
@@ -106,11 +107,11 @@ function analyzeSalesData(data, options) {
             const revenue = Number(calculateRevenue(item, product).toFixed(2));
 
         // прибыль
-            const profit = revenue - cost;
+            const profit = +(revenue - cost).toFixed(2);
         // накапливаем выручку по чеку
         seller.revenue += revenue;
         // накапливаем прибыль продавца
-            seller.profit += profit;
+            seller.profit = +(seller.profit + profit).toFixed(2);
 
         // учет проданных товаров
             if (!seller.products_sold[item.sku]) {
