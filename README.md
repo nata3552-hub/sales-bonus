@@ -1,3 +1,5 @@
+https://github.com/nata3552-hub/sales-bonus
+
 # Проектная работа "Пряники"
 5 спринт, модуль JS
 
