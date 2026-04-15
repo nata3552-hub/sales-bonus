@@ -85,13 +85,15 @@ function analyzeSalesData(data, options) {
     data.purchase_records.forEach(record => {
         
         const seller = sellerIndex[record.seller_id];
-
+        
     // если вдруг продавца нет — пропускаем
         if (!seller) return;
 
     // 1. считаем количество продаж (чеков)
         seller.sales_count += 1;
-        seller.revenue += record.total_amount - record.total_discount;
+
+        seller.revenue += record.total_amount - record.total_discount; // <-- добавил
+
     // 2. перебираем товары в чеке
         record.items.forEach(item => {
             const product = productIndex[item.sku];
@@ -103,7 +105,7 @@ function analyzeSalesData(data, options) {
         // прибыль
             const profit = revenue - cost;
         // накапливаем выручку по чеку
-
+            seller.revenue += revenue;
         // накапливаем прибыль продавца
             seller.profit += profit;
 
