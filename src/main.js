@@ -104,8 +104,7 @@ function analyzeSalesData(data, options) {
             const cost = product.purchase_price * item.quantity;
         // прибыль
             const profit = revenue - cost;
-        // накапливаем выручку по чеку
-            seller.revenue += revenue;
+
         // накапливаем прибыль продавца
             seller.profit += profit;
 
